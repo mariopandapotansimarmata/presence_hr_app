@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
+import 'package:presence_hr_app/component/google_maps.dart';
 
 import 'home.dart';
 
@@ -14,7 +15,7 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> with SingleTickerProviderStateMixin {
   late int currentPage;
   late TabController tabController;
-  List<Widget> listPages = [const Home(), const Home()];
+  List<Widget> listPages = [const Home(), const GoogleMapView()];
 
   @override
   void initState() {

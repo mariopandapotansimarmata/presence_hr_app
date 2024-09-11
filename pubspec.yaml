@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter_floating_bottom_bar: ^1.2.1+1
   one_clock: ^2.0.1
+  geolocator: ^8.2.1
+  geolocator_android: ^3.1.5
+  google_maps_flutter: ^2.7.0
 
 dev_dependencies:
   flutter_test:
