@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:one_clock/one_clock.dart';
 
+import 'db/presence.dart';
+import 'model/presence_model.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -21,7 +24,20 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _fetchPresenceEntries();
     _startClock();
+  }
+
+  Presence? data;
+  final PresenceRepo _presenceRepo = PresenceRepo.instance;
+
+  Future<void> _fetchPresenceEntries() async {
+    try {
+      data = await _presenceRepo.read("john_doe");
+    } catch (e) {
+      // Handle any errors that occur during data fetching
+      print("Error fetching presence entries: $e");
+    }
   }
 
   void _startClock() {
@@ -43,7 +59,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
           title: const Text(
-        "Mario Pandapotan Simarmata",
+        "john_doe",
         style: TextStyle(fontSize: 18),
       )),
       body: SizedBox(
@@ -67,33 +83,44 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            const Text("Presence"),
-            DigitalClock(
-                format: 'Hms',
-                textScaleFactor: 2.0,
-                showSeconds: true,
-                isLive: false,
-                digitalClockTextColor: Colors.green[700]!,
-                decoration: const BoxDecoration(
-                    // color: Colors.yellow,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                datetime: timePresent),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text("Go Home"),
-            DigitalClock(
-                format: 'Hms',
-                textScaleFactor: 2.0,
-                showSeconds: true,
-                isLive: false,
-                digitalClockTextColor: Colors.green[700]!,
-                decoration: const BoxDecoration(
-                    // color: Colors.yellow,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                datetime: goHome),
+            data != null
+                ? Column(
+                    children: [
+                      const Text("Presence Time"),
+                      Text("${data!.userName}"),
+                      DigitalClock(
+                          format: 'Hms',
+                          textScaleFactor: 2.0,
+                          showSeconds: true,
+                          isLive: false,
+                          digitalClockTextColor: Colors.green[700]!,
+                          decoration: const BoxDecoration(
+                              // color: Colors.yellow,
+                              shape: BoxShape.rectangle,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          datetime: data!.presenceTime),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  )
+                : SizedBox(
+                    width: 10,
+                  )
+
+            // const Text("Go Home"),
+            // DigitalClock(
+            //     format: 'Hms',
+            //     textScaleFactor: 2.0,
+            //     showSeconds: true,
+            //     isLive: false,
+            //     digitalClockTextColor: Colors.green[700]!,
+            //     decoration: const BoxDecoration(
+            //         // color: Colors.yellow,
+            //         shape: BoxShape.rectangle,
+            //         borderRadius: BorderRadius.all(Radius.circular(15))),
+            //     datetime: goHome),
           ],
         ),
       ),

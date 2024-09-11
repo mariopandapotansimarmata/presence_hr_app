@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-import 'package:presence_hr_app/component/google_maps.dart';
+import 'package:presence_hr_app/list_presence.dart';
+import 'package:presence_hr_app/presence.dart';
 
 import 'home.dart';
 
@@ -15,7 +16,7 @@ class Screen extends StatefulWidget {
 class _ScreenState extends State<Screen> with SingleTickerProviderStateMixin {
   late int currentPage;
   late TabController tabController;
-  List<Widget> listPages = [const Home(), const GoogleMapView()];
+  List<Widget> listPages = [const Home(), const ListPresence()];
 
   @override
   void initState() {
@@ -49,46 +50,6 @@ class _ScreenState extends State<Screen> with SingleTickerProviderStateMixin {
     const Color unselectedColor = Colors.grey;
     return SafeArea(
       child: Scaffold(
-        endDrawer: Drawer(
-          width: MediaQuery.of(context).size.width * 0.5,
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the drawer if there isn't enough vertical
-          // space to fit everything.
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Preferences',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: Colors.blue),
-                    ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.menu, color: Colors.blue))
-                  ],
-                ),
-              ),
-              ListTile(
-                title: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('Sign Out'), Icon(Icons.exit_to_app)],
-                ),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
         backgroundColor: Colors.white,
         body: BottomBar(
           barDecoration: BoxDecoration(
@@ -122,12 +83,12 @@ class _ScreenState extends State<Screen> with SingleTickerProviderStateMixin {
                 overlayColor: WidgetStateProperty.all(Colors.transparent),
                 indicatorPadding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                 controller: tabController,
-                indicator: UnderlineTabIndicator(
+                indicator: const UnderlineTabIndicator(
                     borderSide: BorderSide(
                       color: Colors.blue,
                       width: 4,
                     ),
-                    insets: const EdgeInsets.fromLTRB(16, 0, 16, 8)),
+                    insets: EdgeInsets.fromLTRB(16, 0, 16, 8)),
                 tabs: [
                   SizedBox(
                     height: 55,
@@ -155,8 +116,14 @@ class _ScreenState extends State<Screen> with SingleTickerProviderStateMixin {
                 child: FloatingActionButton(
                   shape: const CircleBorder(),
                   backgroundColor: Colors.blue,
-                  onPressed: () {},
-                  child: Icon(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return const PresencePage();
+                      },
+                    ));
+                  },
+                  child: const Icon(
                     Icons.add,
                     color: Colors.white,
                   ),
