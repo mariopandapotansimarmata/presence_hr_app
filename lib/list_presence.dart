@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:presence_hr_app/db/presence.dart';
 import 'package:presence_hr_app/model/presence_model.dart';
 
@@ -33,6 +34,15 @@ class _ListPresenceState extends State<ListPresence> {
     }
   }
 
+  String dateTimeFormatter(String dateTimeOld) {
+    DateTime dateTime = DateTime.parse(dateTimeOld);
+
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+    print(formattedDate);
+
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +54,12 @@ class _ListPresenceState extends State<ListPresence> {
         itemBuilder: (context, index) {
           print("${_listPresence.length}");
           final entry = _listPresence[index];
+
           return ListTile(
-            title: Text('Presence at ${entry.presenceTime}'),
+            title: Text(
+                'Presence at ${dateTimeFormatter(entry.presenceTime.toString())}'),
             subtitle: Text(
-                'Go Home at ${entry.goHomeTime}\nLat: ${entry.latitude}, Long: ${entry.longitude}'),
+                'Go Home at ${dateTimeFormatter(entry.goHomeTime.toString())}\nLat: ${entry.latitude}, Long: ${entry.longitude}'),
             trailing: const Icon(Icons.location_on),
           );
         },

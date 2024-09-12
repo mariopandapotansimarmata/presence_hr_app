@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
           title: const Text(
-        "john_doe",
+        "John Doe",
         style: TextStyle(fontSize: 18),
       )),
       body: SizedBox(

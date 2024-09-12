@@ -39,63 +39,66 @@ class _PresencePageState extends State<PresencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            PlaceCircleBody(),
-            const SizedBox(height: 15),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  Position position = await Geolocator.getCurrentPosition(
-                      desiredAccuracy: LocationAccuracy.high);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              PlaceCircleBody(),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    Position position = await Geolocator.getCurrentPosition(
+                        desiredAccuracy: LocationAccuracy.high);
 
-                  double distanceInMeters = Geolocator.distanceBetween(
-                    officeLat,
-                    officeLong,
-                    position.latitude,
-                    position.longitude,
-                  );
+                    double distanceInMeters = Geolocator.distanceBetween(
+                      officeLat,
+                      officeLong,
+                      position.latitude,
+                      position.longitude,
+                    );
 
-                  if (distanceInMeters <= radius) {
-                    if (data == null) {
-                      // Create new presence
-                      final newPresence = Presence(
-                        presenceId: Random().nextInt(
-                            500), // Consider a more robust ID generation method
-                        userName: "john_doe",
-                        presenceTime: DateTime.now(),
-                        goHomeTime: null,
-                        latitude: position.latitude,
-                        longitude: position.longitude,
-                      );
-                      await _presenceRepo.create(newPresence);
-                      print("Presence berhasil");
+                    if (distanceInMeters <= radius) {
+                      if (data == null) {
+                        // Create new presence
+                        final newPresence = Presence(
+                          presenceId: Random().nextInt(
+                              500), // Consider a more robust ID generation method
+                          userName: "john_doe",
+                          presenceTime: DateTime.now(),
+                          goHomeTime: null,
+                          latitude: position.latitude,
+                          longitude: position.longitude,
+                        );
+                        await _presenceRepo.create(newPresence);
+                        print("Presence berhasil");
+                      } else {
+                        // Update existing presence
+                        final updatedPresence = Presence(
+                          presenceId: data!.presenceId,
+                          userName: data!.userName,
+                          presenceTime: data!.presenceTime,
+                          goHomeTime: DateTime.now(),
+                          latitude: data!.latitude,
+                          longitude: data!.longitude,
+                        );
+                        await _presenceRepo.update(updatedPresence);
+                        print(updatedPresence.goHomeTime);
+                        print("Go Home berhasil");
+                      }
                     } else {
-                      // Update existing presence
-                      final updatedPresence = Presence(
-                        presenceId: data!.presenceId,
-                        userName: data!.userName,
-                        presenceTime: data!.presenceTime,
-                        goHomeTime: DateTime.now(),
-                        latitude: data!.latitude,
-                        longitude: data!.longitude,
-                      );
-                      await _presenceRepo.update(updatedPresence);
-                      print(updatedPresence.goHomeTime);
-                      print("Go Home berhasil");
+                      print("Di luar radius absensi");
                     }
-                  } else {
-                    print("Di luar radius absensi");
+                  } catch (e) {
+                    print("Error during presence update: $e");
                   }
-                } catch (e) {
-                  print("Error during presence update: $e");
-                }
-              },
-              child: Text(data == null ? "Presence" : "Go Home"),
-            ),
-          ],
+                },
+                child: Text(data == null ? "Presence" : "Go Home"),
+              ),
+            ],
+          ),
         ),
       ),
     );
