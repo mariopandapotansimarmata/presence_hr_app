@@ -1,16 +1,13 @@
-# presence_hr_app
+# Jogja Kita Gamification
 
-A new Flutter project.
+A geolocation-based employee attendance app uses GPS to record attendance only when employees are at the workplace radius. ## Presence App 
 
-## Getting Started
+* Using Google Maps API
+* Using Local Database SQLite
 
-This project is a starting point for a Flutter application.
+  
+## UI Screenshots
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="ScreenshotsUI/home1.jpeg" width=180> <img src="ScreenshotsUI/presence.jpeg.jpeg" width=180> <img src="ScreenshotsUI/home2.jpeg" width=180> 
+<img src="ScreenshotsUI/go_home_presence.jpeg" width=180> <img src="ScreenshotsUI/presence_list.jpeg" width=180> 
